@@ -7,6 +7,7 @@
  * @author Steven Oderayi <oderayi@gmail.com>
  */
 import Component from '../../component';
+import '../../stylesheets/app/sidebar.css';
 
 function SidebarComponent() {
   Component.call();
@@ -28,60 +29,19 @@ SidebarComponent.prototype.init = function(props) {
 
 
 SidebarComponent.prototype.getTemplate = function() {
+  console.log(this);
   return `
-
-<section class="sidebar component" id="sidebar">
-  <div class="sidebar-content">
-    <nav>
-      <ul class="menu list list-unstyled">
-        <li><span class="icon icon-calculator"></span><a class="full-screen-toggle" href="/" data-target="#converter">Converter</a></li>
-        <li><span class="icon icon-clock"></span><a class="full-screen-toggle" href="/#/history" data-target="#history">History</a></li>
-        <li><span class="icon icon-globe"></span><a class="full-screen-toggle" href="/#/about" data-target="#about">About</a></li>
-      </ul>
-    </nav>
-  </div>
-</section>
-<style>
-  .sidebar {
-      position: fixed;
-      top: 0;
-      right: -315px;
-      width: 300px;
-      height: 100vh;
-      overflow-y: auto;
-      padding: 2em;
-      z-index: 11;
-      background-color: rgba(255, 255, 255, 0.95);
-      box-shadow: -5px 0px 10px rgba(0, 0, 0, 0.2);
-      
-  }
-  
-  .sidebar-content {
-      text-align: left;
-      line-height: 2em;
-  }
-  
-  .sidebar nav {
-      background-color: transparent;
-      margin-left: 1.5rem;
-  }
-  
-  .sidebar nav .menu {
-      padding-top: 4em;
-  }
-  
-  .sidebar nav ul li a {
-      line-height: 3em;
-      color: #111;
-  }
-  
-  .sidebar nav .icon {
-    position:relative;
-    top: 2px;
-    padding-right: 1.5em;
-      
-  }
-</style>
+    <section class="sidebar component" id="sidebar">
+      <div class="sidebar-content">
+        <nav>
+          <ul class="menu list list-unstyled">
+            <li><span class="icon icon-calculator"></span><a class="full-screen-toggle" href="${this.root_url}" data-target="#converter">Converter</a></li>
+            <li><span class="icon icon-clock"></span><a class="full-screen-toggle" href="${this.root_url}/#/history" data-target="#history">History</a></li>
+            <li><span class="icon icon-globe"></span><a class="full-screen-toggle" href="${this.root_url}/#/about" data-target="#about">About</a></li>
+          </ul>
+        </nav>
+      </div>
+    </section>
   `;
 };
 

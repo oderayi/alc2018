@@ -6,27 +6,26 @@
  */
 import Component from '../../component';
 import Http from '../../http';
-import Utils from '../../utils';
 
-function OrdersComponent() {
+function HistoryComponent() {
   Component.call();
 }
 
-OrdersComponent.prototype = Object.create(Component.prototype);
+HistoryComponent.prototype = Object.create(Component.prototype);
 
-OrdersComponent.prototype.constructor = OrdersComponent;
+HistoryComponent.prototype.constructor = HistoryComponent;
 
-OrdersComponent.prototype.init = function(props) {
+HistoryComponent.prototype.init = function(props) {
   props = props || {};
-  props.service = props.service || new OrdersService();
+  props.service = props.service || new HistoryService();
   Component.prototype.init.call(this, props);
   return this;
 };
 
-OrdersComponent.prototype.getTemplate = function() {
+HistoryComponent.prototype.getTemplate = function() {
   return `
-    <section class="orders component" id="orders">
-      <h1 class="mb-1">My Transactions</h1>
+    <section class="history component" id="history">
+      <h1 class="mb-1">History</h1>
       <div class="table-responsive">
       <table class="table">
         <thead>
@@ -35,7 +34,7 @@ OrdersComponent.prototype.getTemplate = function() {
         </tbody>
         <tfoot class="text-left">
           <tr scope="row">
-            <td class="text-center" colspan="100%">You have not placed any order yet.</td>
+            <td class="text-center" colspan="100%">Empty :-( </td>
           </tr>
         </tfoot>
       </table>
@@ -44,7 +43,7 @@ OrdersComponent.prototype.getTemplate = function() {
   `;
 };
 
-OrdersComponent.prototype.setTitle = function(title) {
+HistoryComponent.prototype.setTitle = function(title) {
   this.component
     .find("h1")
     .first()
@@ -52,90 +51,78 @@ OrdersComponent.prototype.setTitle = function(title) {
   return this;
 };
 
-OrdersComponent.prototype.onBind = function() {
+HistoryComponent.prototype.onBind = function() {
   $(window).on(
-    "sell_transaction_completed converter_transaction_completed",
+    "conversion_completed",
     (e, data) => {
-      this.loadOrders();
+      this.loadHistory();
     }
   );
 
-  this.loadOrders();
+  this.loadHistory();
 };
 
-OrdersComponent.prototype.loadOrders = function() {
+HistoryComponent.prototype.loadHistory = function() {
   let table = this.component.find("table");
   return new Promise((resolve, reject) => {
     this.service
-      .getOrders()
+      .getHistory()
       .then(res => {
-        if (res.orders.length < 1) {
+        if (res.history.length < 1) {
           resolve([]);
           return;
         }
         let tableHead = `
       <tr scope="row">
-        <th width="10%">Ref. #</th>
-        <th width="20%">Date</th>
-        <th>Action</th>
-        <th>Units</th>
-        <th>Price</th>
-        <th>Status</th>
+        <th>From Currency</th>
+        <th>From Amount</th>
+        <th>To Currency</th>
+        <th>To Amount</th>
       </tr>`;
         table.find("thead").html(tableHead);
         let tableRows = "";
-        for (let i = 0; i < res.orders.length; i++) {
-          const row = res.orders[i];
+        for (let i = 0; i < res.history.length; i++) {
+          const row = res.history[i];
           tableRows += `
-				<tr scope="row">
-        <td>${row.ref}</td>
-				<td>${Utils.formatDateTime(row.created_at)}</td>
-				<td>${row.order_type == "converter"
-          ? '<span class = "text-success">Bought</span>'
-          : '<span class = "text-warning">Sold</span>'}</td>
-				<td>${row.crypto_amount} ${row.crypto_code}</td>
-				<td>${Utils.formatCurrencyLocal(row.total)}</td>
-        <td>${Utils.capitalize(row.status)}</td>
+        <tr scope="row">
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
 				</tr>`;
         }
         if (tableRows) {
           table.find("tbody").html(tableRows);
         }
-        table.find("tfoot").html(
-          `<tr scope="row"><td colspan="100%">Total: 
-          <strong>${res.orders.length} transaction${res.orders.length > 1
-            ? "s"
-            : ""}</strong>.</td></tr>`
-        );
       })
       .catch(xhr => {Http.handleError(xhr); reject(xhr)});
   });
 };
 
-OrdersComponent.prototype.onUnbind = function() {
-  this.component.find("table body, table foot").html("");
+HistoryComponent.prototype.onUnbind = function() {
+  this.component.find("table body").html("");
 };
 
 /**
-*  OrdersService
+*  HistoryService
 *
 */
-function OrdersService(options) {
+function HistoryService(options) {
   const opts = options || {};
   this.api_root = opts.api_root || window.context.getAPIRoot();
 }
 
-OrdersService.prototype.constructor = OrdersService;
+HistoryService.prototype.constructor = HistoryService;
 
 /**
-* get all orders data
+* get all history data
 */
-OrdersService.prototype.getOrders = function() {
+HistoryService.prototype.getHistory = function() {
   return new Promise((resolve, reject) => {
-    Http.get(`${this.api_root}/orders`)
+    Http.get(`${this.api_root}/history`)
       .done(data => resolve(data))
       .fail(xhr => reject(xhr));
   });
 };
 
-module.exports = OrdersComponent;
+module.exports = HistoryComponent;

@@ -6,17 +6,15 @@
  */
 import Component from '../../component';
 import Utils from '../../utils';
+import '../../stylesheets/app/navbar.css';
 
 function NavbarComponent() {
   Component.call();
 }
 
 NavbarComponent.prototype = Object.create(Component.prototype);
-
 NavbarComponent.prototype.constructor = NavbarComponent;
-
 NavbarComponent.prototype.root_url;
-
 NavbarComponent.prototype.navbar = null;
 
 NavbarComponent.prototype.init = function(props) {
@@ -33,6 +31,8 @@ NavbarComponent.prototype.getTemplate = function() {
   return `
   <header>
     <nav class="navbar container">
+      <h1><a class="navbar-brand" href="/"></a>
+      </h1>
         <div class="nav navbar-nav animated">
           <input class="toggle-menu" id="toggle-menu" type="checkbox" name="">
           <label class="sidebar-toggle" for="toggle-menu"><span class="menu-bar"></span>

@@ -8,7 +8,7 @@
  */
 import '../../vendor/validation/jquery.validate.min';
 import '../../vendor/validation/additional-methods.min';
-import  '../../vendor/bootstrap/js/bootstrap.min';
+import '../../vendor/bootstrap/js/bootstrap.min';
 import '../../vendor/bootstrap/css/bootstrap.min.css';
 import 'font-awesome/css/font-awesome.min.css';
 import 'simple-line-icons/css/simple-line-icons.css';
@@ -22,7 +22,6 @@ import '../stylesheets/common.css';
 import '../stylesheets/full-screen.css';
 import '../stylesheets/utils.css';
 import '../stylesheets/app/fonts.css';
-import '../stylesheets/app/navbar.css';
 import '../stylesheets/app/style.css';
 
 import Utils from '../utils';
@@ -54,23 +53,23 @@ App.prototype.prototype.constructor = App;
 
 App.prototype.currentScreen = null;
 
-App.prototype.getRootURL = function() {
+App.prototype.getRootURL = function () {
   return "/";
 };
 
-App.prototype.getAPIRoot = function() {
+App.prototype.getAPIRoot = function () {
   return this.api_root;
 };
 
-App.prototype.setClientToken = function(token) {
+App.prototype.setClientToken = function (token) {
   sessionStorage.setItem("client_token", token);
 };
 
-App.prototype.getClientToken = function() {
+App.prototype.getClientToken = function () {
   return sessionStorage.getItem("client_token");
 };
 
-App.prototype.setProfile = function(profile) {
+App.prototype.setProfile = function (profile) {
   if (typeof profile == "object") {
     sessionStorage.setItem("user_profile", btoa(JSON.stringify(profile)));
     return;
@@ -78,7 +77,7 @@ App.prototype.setProfile = function(profile) {
   console.log("App::setProfile: Invalid object");
 };
 
-App.prototype.getProfile = function() {
+App.prototype.getProfile = function () {
   let profile = sessionStorage.getItem("user_profile");
   if (profile) {
     return JSON.parse(atob(sessionStorage.getItem("user_profile")));
@@ -86,19 +85,19 @@ App.prototype.getProfile = function() {
   return null;
 };
 
-App.prototype.clearSession = function() {
+App.prototype.clearSession = function () {
   return sessionStorage.clear();
 };
 
-App.prototype.hideComponent = function(selector) {
+App.prototype.hideComponent = function (selector) {
   $(selector).fadeOut("fast");
 };
 
-App.prototype.showComponent = function(selector) {
+App.prototype.showComponent = function (selector) {
   $(selector).fadeIn();
 };
 
-App.prototype.getComponent = function(target) {  
+App.prototype.getComponent = function (target) {
   if (!target.length) return null;
   let componentName = `${Utils.capitalize(target)}Component`;
 
@@ -109,7 +108,7 @@ App.prototype.getComponent = function(target) {
   return null;
 };
 
-App.prototype.userIsAuthenticated = function() {
+App.prototype.userIsAuthenticated = function () {
   const token = this.getClientToken();
   if (token && token.length > 0) {
     return true;
@@ -117,70 +116,48 @@ App.prototype.userIsAuthenticated = function() {
   return false;
 };
 
-App.prototype.hideSecureLinks = function() {
+App.prototype.hideSecureLinks = function () {
   $(".require-login").hide();
 };
 
-App.prototype.showSecureLinks = function() {
+App.prototype.showSecureLinks = function () {
   $(".require-login")
     .removeClass("hide")
     .show();
 };
 
-App.prototype.hideInsecureLinks = function() {
+App.prototype.hideInsecureLinks = function () {
   $(".require-logut").hide();
 };
 
-App.prototype.showInsecureLinks = function() {
+App.prototype.showInsecureLinks = function () {
   $(".require-logout")
     .removeClass("hide")
     .show();
 };
 
-App.prototype.initAuth = function() {
-  const dashboard = new components.DashboardComponent();
-  dashboard.init();
-  dashboard.render($("#container"));
-
-  const sidebarComponent = new components.SidebarComponent();
-  sidebarComponent.init();
-  sidebarComponent.setIsAuth();
-  this.sidebar = sidebarComponent;
-  this.sidebar.render($("#sidebar_container"));
-
-  const navbarComponent = new components.NavbarComponent()
-    .init()
-    .setIsAuth()
-    .setInverse(true)
-    .setFixedTop(true);
-  this.navbar = navbarComponent;
-  this.navbar.render($("#navbar_container"));
-};
-
-App.prototype.initGuest = function() {
+App.prototype.initGuest = function () {
   const homeComponent = new components.HomeComponent();
   homeComponent.init();
   homeComponent.render($("#container"));
 
   const sidebarComponent = new components.SidebarComponent();
-  sidebarComponent.init();
-  sidebarComponent.setIsLoggedOut();
+  sidebarComponent.init({ root_url: this.root_url });
   this.sidebar = sidebarComponent;
   this.sidebar.render($("#sidebar_container"));
 
   const navbarComponent = new components.NavbarComponent();
   navbarComponent.init();
-  navbarComponent.setIsLoggedOut();
   this.navbar = navbarComponent;
   this.navbar.render($("#navbar_container"));
 };
 
-App.prototype.logout = function() {
+App.prototype.logout = function () {
   this.clearSession();
   window.location.href = "/";
 };
 
-App.prototype.initOnce = function() {
+App.prototype.initOnce = function () {
   var self = this;
 
   $("body")
@@ -203,26 +180,16 @@ App.prototype.initOnce = function() {
   /**
    * HashBang navigation
    */
-  window.onhashchange = function() {
+  window.onhashchange = function () {
     self.navigateHash(window.location.hash);
   };
 
   if (window.location.hash) {
     this.navigateHash(window.location.hash);
   }
-
-  /**
-   * Login successful event subscription
-   */
-  $(window).on("login_successful", (e, res) => {
-    this.setClientToken(res.token);
-    this.setProfile(res.profile);
-    window.location.href = this.root_url;
-  });
-  
 };
 
-App.prototype.navigateHash = function(hash, container) {
+App.prototype.navigateHash = function (hash, container) {
   const cont = container || null;
   const componentID = hash.substr(2);
   if (!componentID.length) return;
@@ -234,21 +201,14 @@ App.prototype.navigateHash = function(hash, container) {
   }
 };
 
-App.prototype.load = function() {
-  var self = this;
-  /* show dashboard automatically if user already logged */
-  if (this.userIsAuthenticated()) {
-    this.initAuth();
-  } else {
-    this.initGuest();
-  }
-
+App.prototype.load = function () {
+  this.initGuest();
   $("form").each((idx, f) => {
     $(f).validate();
   });
 };
 
-App.prototype.init = function() {
+App.prototype.init = function () {
   this.load();
   this.initOnce();
 };

@@ -11,7 +11,6 @@ window.addEventListener("load", () => {
   let root = "http://localhost:8080";
   let root_url = root;
   let backend_api_root = '';
-
   var app = new App({ root_url: root_url, api_root: backend_api_root });
   window.context = app;
   app.init();

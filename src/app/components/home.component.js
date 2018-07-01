@@ -238,7 +238,6 @@ HomeComponent.prototype.initCurrencyConverter = function () {
 };
 
 HomeComponent.prototype.displayResult = function(data){
-    console.log(data);
     this.widgets.from_currency.val(data.from_currency);
     this.widgets.from_amount.val(data.from_amount);
     this.widgets.to_currency.val(data.to_currency);
