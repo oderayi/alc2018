@@ -7,7 +7,7 @@ const extractCSS = new ExtractTextPlugin({ filename: '[name].[chunkhash].css' })
 module.exports = {
   entry: "./src/index.js",
   output: {
-    path: __dirname + "/dist",
+    path: __dirname + "/docs",
     filename: "[chunkhash].js"
   },
   module: {
