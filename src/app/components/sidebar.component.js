@@ -29,15 +29,14 @@ SidebarComponent.prototype.init = function(props) {
 
 
 SidebarComponent.prototype.getTemplate = function() {
-  console.log(this);
   return `
     <section class="sidebar component" id="sidebar">
       <div class="sidebar-content">
         <nav>
           <ul class="menu list list-unstyled">
-            <li><span class="icon icon-calculator"></span><a class="full-screen-toggle" href="${this.root_url}" data-target="#converter">Converter</a></li>
-            <li><span class="icon icon-clock"></span><a class="full-screen-toggle" href="${this.root_url}/#/history" data-target="#history">History</a></li>
-            <li><span class="icon icon-globe"></span><a class="full-screen-toggle" href="${this.root_url}/#/about" data-target="#about">About</a></li>
+            <li><span class="icon icon-calculator"></span><a class="full-screen-toggle" href="./" data-target="#converter">Converter</a></li>
+            <li><span class="icon icon-clock"></span><a class="full-screen-toggle" href="./#/history" data-target="#history">History</a></li>
+            <li><span class="icon icon-globe"></span><a class="full-screen-toggle" href="./#/about" data-target="#about">About</a></li>
           </ul>
         </nav>
       </div>
