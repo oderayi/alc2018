@@ -1,0 +1,66 @@
+body {
+    -webkit-font-smoothing: antialiased;
+    background: #fff;
+}
+
+.img-thumbnail {
+    padding: 0;
+    border-radius: 0;
+}
+
+#container .component .component h1 {
+    font-size: 1.8em;
+}
+
+.block {
+    display: block;
+}
+
+.btn {
+    border-radius: 0;
+}
+
+th,
+td {
+    white-space: nowrap;
+    font-size: 14px;
+}
+
+select {
+    padding: .5em;
+}
+
+.sidebar {
+    font-weight: normal;
+}
+
+.max-round {
+    border-radius: 2em;
+}
+
+::-webkit-scrollbar {
+    background: rgba(0, 0, 0, 0.1);
+}
+
+::-webkit-scrollbar:vertical {
+    width: 8px;
+    background: transparent;
+}
+
+::-webkit-scrollbar:horizontal {
+    height: 7px;
+    background: transparent;
+}
+
+::-webkit-scrollbar-track {
+    border-radius: 10px;
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #ccc;
+}
+
+::-webkit-scrollbar-thumb {
+    border-radius: 5px;
+}
