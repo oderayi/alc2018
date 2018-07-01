@@ -125,10 +125,7 @@ Component.prototype.showFullScreen = function(component) {
   if ("function" == typeof component.onRender) {
     component.onRender();
   }
-  /**
-   * Initialize material design for new view
-   */
-  $.material.init();
+
 
   /* capture 'esc' button to close full screen */
   $(document).keyup(e => {

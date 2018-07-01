@@ -5,7 +5,7 @@
  * @author Steven Oderayi <oderayi@gmail.com>
  */
 
- import Alert from './alert';
+import Alert from './alert';
 
 const Http = {};
 
@@ -15,16 +15,9 @@ Http.post = function (url, data, headers, other_options) {
   let hdrs = headers || {};
   options.data = options.data || data;
   options.type = "post";
-  const context = options.context || window.context || {}
 
-  // add authorization header if user is authenticated
-  if (context.userIsAuthenticated()) {
-    let token = context.getClientToken();
-    hdrs.Authorization = `Bearer ${token}`;
-  }
-
-  const complete = function (jqXHR, textStatus) {
-    if (jqXHR.status == 401 && jqXHR.responseText == "Unauthorized") {
+  const complete = function (xhr) {
+    if (xhr.status == 401) {
       Http.handleUnauthorized();
     }
   };
@@ -44,16 +37,9 @@ Http.get = function (url, data, headers, other_options) {
   let hdrs = headers || {};
   options.data = options.data || data;
   options.type = "get";
-  const context = options.context || window.context || {};
 
-  // add authorization header if user is authenticated
-  if (context.userIsAuthenticated()) {
-    let token = context.getClientToken();
-    hdrs.Authorization = `Bearer ${token}`;
-  }
-
-  const complete = function (jqXHR, textStatus) {
-    if (jqXHR.status == 401 && jqXHR.responseText == "Unauthorized") {
+  const complete = function (xhr) {
+    if (xhr.status == 401) {
       Http.handleUnauthorized();
     }
   };
@@ -66,6 +52,7 @@ Http.get = function (url, data, headers, other_options) {
   return $.ajax(url, options);
 };
 
+
 Http.put = function (url, data, headers, other_options) {
 
   const options = other_options || {};
@@ -73,16 +60,9 @@ Http.put = function (url, data, headers, other_options) {
   hdrs = headers || {};
   options.data = options.data || data;
   options.type = "put";
-  const context = options.context || window.context || {}
 
-  // add authorization header if user is authenticated
-  if (context.userIsAuthenticated()) {
-    let token = context.getClientToken();
-    hdrs.Authorization = `Bearer ${token}`;
-  }
-
-  const complete = function (jqXHR, textStatus) {
-    if (jqXHR.status == 401 && jqXHR.responseText == "Unauthorized") {
+  const complete = function (xhr) {
+    if (xhr.status == 401) {
       Http.handleUnauthorized();
     }
   };
@@ -103,16 +83,9 @@ Http.delete = function (url, data, headers, other_options) {
   let hdrs = headers || {};
   options.data = options.data || data;
   options.type = "delete";
-  const context = options.context || window.context || {}
 
-  // add authorization header if user is authenticated
-  if (context.userIsAuthenticated()) {
-    let token = context.getClientToken();
-    hdrs.Authorization = `Bearer ${token}`;
-  }
-
-  const complete = function (jqXHR, textStatus) {
-    if (jqXHR.status == 401 && jqXHR.responseText == "Unauthorized") {
+  const complete = function (xhr) {
+    if (xhr.status == 401) {
       Http.handleUnauthorized();
     }
   };

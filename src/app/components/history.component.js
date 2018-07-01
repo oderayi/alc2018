@@ -52,6 +52,8 @@ HistoryComponent.prototype.setTitle = function(title) {
 };
 
 HistoryComponent.prototype.onBind = function() {
+  // TODO: loadHistory from indexed DB
+  return;
   $(window).on(
     "conversion_completed",
     (e, data) => {
@@ -119,9 +121,11 @@ HistoryService.prototype.constructor = HistoryService;
 */
 HistoryService.prototype.getHistory = function() {
   return new Promise((resolve, reject) => {
-    Http.get(`${this.api_root}/history`)
-      .done(data => resolve(data))
-      .fail(xhr => reject(xhr));
+    //TODO
+    resolve({});
+    // Http.get(`${this.api_root}/history`)
+    //   .done(data => resolve(data))
+    //   .fail(xhr => reject(xhr));
   });
 };
 

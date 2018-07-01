@@ -17,7 +17,6 @@ function HomeComponent() {
 
 HomeComponent.prototype = Object.create(Component.prototype);
 HomeComponent.prototype.constructor = HomeComponent;
-HomeComponent.prototype.currencies = null;
 
 HomeComponent.prototype.init = function (props) {
     props = props || {};
@@ -41,24 +40,20 @@ HomeComponent.prototype.getTemplate = function () {
                 <label class="control-label col-md-3" for="from_amount">FROM</label>
                 <div class="col-md-3">
                   <input class="form-control" type="number" step="any" min="0" name="from_amount" placeholder="Amount to convert from" value="0.00">
-                  <span class="help-block">Amount to convert from</span>
                 </div>
                 <div class="col-md-6">
                   <select class="form-control select required" name="from_currency">
                     <option value="">Loading...</option>
                   </select>
-                  <span class="help-block">"FROM" currency</span>
                 </div>
                 <label class="control-label col-md-3" for="to_amount">TO</label>
                 <div class="col-md-3">
                   <input class="form-control" type="number" step="any" min="0" name="to_amount" placeholder="Amount to convert to" value="0.00">
-                  <span class="help-block">Amount to convert to</span>
                 </div>
                 <div class="col-md-6">
                     <select class="form-control select required" name="to_currency">
                         <option value="">Loading...</option>
                     </select>
-                    <span class="help-block">"TO" currency</span>
                 </div>
               </div>
             </div>
@@ -248,13 +243,13 @@ HomeComponent.prototype.initCurrencies = function(){
     new ConverterService()
     .getCurrencies()
     .then(currencies => {
-        self.currencies = currencies;
         this.widgets.to_currency.empty();
+        this.widgets.from_currency.empty();
         let options = [];
         options.push("<option></option>");
         for (let currency in currencies) {
             options.push(
-                `<option value = "${currency}"> ${currencies[currency].currencyName}</option>`
+                `<option value = "${currencies[currency].id}"> ${currencies[currency].currencyName}</option>`
             );
         }
         this.widgets.from_currency

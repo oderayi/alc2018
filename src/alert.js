@@ -12,6 +12,7 @@ import '../vendor/noty/themes/default';
 const Alert = {};
 
 Alert.error = (msg, timeout, onCloseCallback) => {
+  if(!msg.length) return;
   timeout = timeout || 4000;
   onCloseCallback = onCloseCallback || null;
   new noty({
@@ -25,6 +26,7 @@ Alert.error = (msg, timeout, onCloseCallback) => {
 };
 
 Alert.success = (msg, timeout, onCloseCallback) => {
+  if(!msg.length) return;
   timeout = timeout || 3000;
   onCloseCallback = onCloseCallback || null;
   new noty({

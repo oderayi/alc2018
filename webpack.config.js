@@ -1,14 +1,16 @@
 // webpack.config.js
+const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
-const extractCSS = new ExtractTextPlugin({ filename: '[name].[chunkhash].css' })
+const ServiceWorkerWebpackPlugin = require('serviceworker-webpack-plugin');
+const extractCSS = new ExtractTextPlugin({ filename: '[name].css' });
 
 module.exports = {
   entry: "./src/index.js",
   output: {
     path: __dirname + "/docs",
-    filename: "[chunkhash].js"
+    filename: "bundle.js"
   },
   module: {
     rules: [
@@ -25,15 +27,15 @@ module.exports = {
       {
         test: /\.css$/,
         use: extractCSS.extract({
-          use: ["css-loader?name=[hash].[ext]"],
-          fallback: "style-loader?name=[hash].[ext]"
+          use: ["css-loader?name=[name].[ext]"],
+          fallback: "style-loader?name=[name].[ext]"
         })
       },
       {
         test: /\.woff2?$|\.ttf$|\.eot$|\.svg$/,
         use: [
           {
-            loader: "file-loader?name=[hash].[ext]"
+            loader: "file-loader?name=[name].[ext]"
           }
         ]
       },
@@ -41,7 +43,7 @@ module.exports = {
         test: /\.(png|jpg|ico|xml|json)$/,
         use: [
           {
-            loader: "file-loader?name=[hash].[ext]"
+            loader: "file-loader?name=[name].[ext]"
           }
         ]
       }
@@ -49,6 +51,9 @@ module.exports = {
   },
   plugins: [
     extractCSS,
+    new ServiceWorkerWebpackPlugin({
+      entry: path.join(__dirname, 'src/sw.js'),
+    }),
     new HtmlWebpackPlugin({
       title: "Currency Converter",
       filename: "index.html",
