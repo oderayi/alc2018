@@ -254,10 +254,10 @@ HomeComponent.prototype.initCurrencies = function(){
         }
         this.widgets.from_currency
             .append(options)
-            .val(Object.keys(currencies)[0]);
+            .val('USD');
         this.widgets.to_currency
             .append(options)
-            .val(Object.keys(currencies)[1])
+            .val('NGN')
             .trigger("change");
         
     })
